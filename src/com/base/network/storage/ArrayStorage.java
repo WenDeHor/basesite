@@ -2,15 +2,18 @@ package com.base.network.storage;
 
 import com.base.network.model.Resume;
 
+import java.util.Arrays;
+
 
 public class ArrayStorage {
     private Resume[] storage = new Resume[10000];
     private int size = 0;
 
     public void clear() {
-        for (int i = 0; i < size; i++) {
-            storage[i] = null;
-        }
+        Arrays.fill(storage, 0, size, null);
+//        for (int i = 0; i < size; i++) {
+//            storage[i] = null;
+//        }
         size = 0;
     }
 
@@ -57,11 +60,12 @@ public class ArrayStorage {
     }
 
     public Resume[] getAll() {
-        Resume[] result = new Resume[size];
-        for (int i = 0; i < size; i++) {
-            result[i] = storage[i];
-        }
-        return result;
+        return Arrays.copyOfRange(storage, 0, size);
+//        Resume[] result = new Resume[size];
+//        for (int i = 0; i < size; i++) {
+//            result[i] = storage[i];
+//        }
+//        return result;
     }
 
     public int size() {
