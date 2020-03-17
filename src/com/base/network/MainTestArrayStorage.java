@@ -4,23 +4,23 @@ import com.base.network.model.Resume;
 import com.base.network.storage.ArrayStorage;
 import com.base.network.storage.Storage;
 
+
 public class MainTestArrayStorage {
     private static final Storage ARRAY_STORAGE = new ArrayStorage();
+    private static final String UUID1 = "uuid1";
+    private static final String UUID2 = "uuid2";
+    private static final String UUID3 = "uuid3";
 
     public static void main(String[] args) {
-        final Resume r1 = new Resume();
-        r1.setUuid("uuid1");
-        final Resume r2 = new Resume();
-        r2.setUuid("uuid2");
-        final Resume r3 = new Resume();
-        r3.setUuid("uuid3");
-        final Resume r4 = new Resume();
-        r4.setUuid("uuid4");
+        final Resume r1 = new Resume(UUID1);
+        final Resume r2 = new Resume(UUID2);
+        final Resume r3 = new Resume(UUID3);
+
 
         ARRAY_STORAGE.save(r1);
         ARRAY_STORAGE.save(r2);
         ARRAY_STORAGE.save(r3);
-        ARRAY_STORAGE.save(r4);
+
 
         System.out.println("Get r1: " + ARRAY_STORAGE.get(r1.getUuid()));
         System.out.println("Size: " + ARRAY_STORAGE.size());
