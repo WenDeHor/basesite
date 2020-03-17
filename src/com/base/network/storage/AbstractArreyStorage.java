@@ -8,7 +8,7 @@ import com.base.network.model.Resume;
 import java.util.Arrays;
 
 public abstract class AbstractArreyStorage implements Storage {
-    protected static final int STORAGE_LIMIT = 10000;
+    public static final int STORAGE_LIMIT = 10000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
     @Override
@@ -57,7 +57,7 @@ public abstract class AbstractArreyStorage implements Storage {
     @Override
     public void delete(String uuid) {
         int index = getIndex(uuid);
-        if (index <= 0) {
+        if (index < 0) {
             throw new NotExistStorageExeption(uuid);
         } else {
             fillDeletedElement(index);

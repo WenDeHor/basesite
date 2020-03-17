@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class AbstractArreyStorageTest {
+public abstract class AbstractArreyStorageTest {
     private Storage storage;
     private static final String UUID_1 = "uuid_1";
     private static final Resume RESUME_1 = new Resume(UUID_1);
@@ -89,7 +89,7 @@ public class AbstractArreyStorageTest {
     @Test(expected = StoragExeption.class)
     public void saveOverflove() throws Exception {
         try {
-            for (int i = 4; i <=AbstractArreyStorage.STORAGE_LIMIT; i++) {
+            for (int i = 4; i <= AbstractArreyStorage.STORAGE_LIMIT; i++) {
                 storage.save(new Resume());
             }
         } catch (StoragExeption e) {
@@ -102,9 +102,9 @@ public class AbstractArreyStorageTest {
 
     @Test(expected = NotExistStorageExeption.class)
     public void delete() {
-        storage.delete(UUID_1);
+        storage.delete(UUID_2);
         assertSize(2);
-        storage.get(UUID_1);
+        storage.get(UUID_2);
     }
 
     @Test(expected = NotExistStorageExeption.class)
