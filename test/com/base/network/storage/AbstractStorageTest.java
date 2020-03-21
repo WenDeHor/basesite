@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 public abstract class AbstractStorageTest {
     private Storage storage;
@@ -53,11 +54,11 @@ public abstract class AbstractStorageTest {
         assertSize(0);
     }
 
-    @Test(expected = NotExistStorageExeption.class)
+    @Test
     public void update() {
         Resume newResume = new Resume(UUID_1);
         storage.update(newResume);
-        assertEquals(newResume, storage.get(UUID_1));
+        assertSame(newResume, storage.get(UUID_1));
     }
     @Test(expected = NotExistStorageExeption.class)
     public void updateNotExist() {
@@ -102,9 +103,9 @@ public abstract class AbstractStorageTest {
 
     @Test(expected = NotExistStorageExeption.class)
     public void delete() {
-        storage.delete(UUID_3);
+        storage.delete(UUID_1);
         assertSize(2);
-        storage.get(UUID_3);
+        storage.get(UUID_1);
     }
 
     @Test(expected = NotExistStorageExeption.class)
