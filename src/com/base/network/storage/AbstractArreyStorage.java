@@ -1,21 +1,19 @@
 package com.base.network.storage;
 
-import com.base.network.exeption.ExistStorageExeption;
-import com.base.network.exeption.NotExistStorageExeption;
 import com.base.network.exeption.StoragExeption;
 import com.base.network.model.Resume;
 
 import java.util.Arrays;
 
-public abstract class AbstractArreyStorage implements Storage {
+public abstract class AbstractArreyStorage extends AbstractStorage {
     public static final int STORAGE_LIMIT = 10000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
-    @Override
+
     public int size() {
         return size;
     }
-    @Override
+
     public void clear() {
         Arrays.fill(storage, 0, size, null);
 //        for (int i = 0; i < size; i++) {
@@ -23,16 +21,22 @@ public abstract class AbstractArreyStorage implements Storage {
 //        }
         size = 0;
     }
+
+
     @Override
-    public void update(Resume r) {
-        int index = getIndex(r.getUuid());
-        if (index != -1) {
-            throw new NotExistStorageExeption(r.getUuid());
-        } else {
-            storage[index] = r;
-        }
+    protected void doUpdate(Resume r, Object searchKey) {
+        storage[(Integer) searchKey] = r;
     }
-    @Override
+
+//    public void update(Resume r) {
+//        int index = getSearchKay(r.getUuid());
+//        if (index != -1) {
+//            throw new NotExistStorageExeption(r.getUuid());
+//        } else {
+//            storage[index] = r;
+//        }
+//    }
+
     public Resume[] getAll() {
         return Arrays.copyOfRange(storage, 0, size);
 //        Resume[] result = new Resume[size];
@@ -41,45 +45,72 @@ public abstract class AbstractArreyStorage implements Storage {
 //        }
 //        return result;
     }
+
     @Override
-    public void save(Resume r) {
-        int index = getIndex(r.getUuid());
-        if (index >= 0) {
-            throw new ExistStorageExeption(r.getUuid());
-        } else if (size == storage.length) {
+    protected void doSave(Resume r, Object searchKey) {
+        if (size == storage.length) {
             throw new StoragExeption("Storage overflow", r.getUuid());
         } else {
-            isertElement(r, index);
+            isertElement(r, (Integer) searchKey);
             size++;
         }
     }
 
-    @Override
-    public void delete(String uuid) {
-        int index = getIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageExeption(uuid);
-        } else {
-            fillDeletedElement(index);
-            storage[size - 1] = null;
-            size--;
-        }
+//    public void save(Resume r) {
+//        int index = getSearchKay(r.getUuid());
+//        if (index >= 0) {
+//            throw new ExistStorageExeption(r.getUuid());
+//        } else if (size == storage.length) {
+//            throw new StoragExeption("Storage overflow", r.getUuid());
+//        } else {
+//            isertElement(r, index);
+//            size++;
+//        }
+//    }
 
+
+    @Override
+    protected void doDelate(Object searchKey) {
+        fillDeletedElement((Integer) searchKey);
+        storage[size - 1] = null;
+        size--;
     }
 
+//    public void delete(String uuid) {
+//        int index = getSearchKay(uuid);
+//        if (index < 0) {
+//            throw new NotExistStorageExeption(uuid);
+//        } else {
+//            fillDeletedElement(index);
+//            storage[size - 1] = null;
+//            size--;
+//        }
+//
+//    }
+
     @Override
-    public Resume get(String uuid) {
-        int index = getIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageExeption(uuid);
-        }
-        return storage[index];
+    protected Resume doGet(Object searchKey) {
+        return storage[(Integer) searchKey];
     }
 
-    protected abstract int getIndex(String uuid);
+//    public Resume get(String uuid) {
+//        int index = getSearchKay(uuid);
+//        if (index < 0) {
+//            throw new NotExistStorageExeption(uuid);
+//        }
+//        return storage[index];
+//    }
+
+    @Override
+    protected boolean isExist(Object searchKey) {
+        return (Integer) searchKey >= 0;
+    }
 
     protected abstract void fillDeletedElement(int index);
 
     protected abstract void isertElement(Resume r, int index);
+
+    protected abstract Integer getSearchKey(String uuid);
+
 
 }

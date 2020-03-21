@@ -1,4 +1,4 @@
-package com.base.network.exeption;
+package com.base.network.model.exeption;
 
 public class StoragExeption extends RuntimeException {
     private final String uuid;
