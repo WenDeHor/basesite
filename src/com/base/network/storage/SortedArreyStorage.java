@@ -7,13 +7,24 @@ import java.util.Comparator;
 
 public class SortedArreyStorage extends AbstractArreyStorage {
 
+//TODO #1
+//    private static final Comparator<Resume> RESUME_COMPARATOR = new Comparator<Resume>() {
+//        @Override
+//        public int compare(Resume o1, Resume o2) {
+//            return o1.getUuid().compareTo(o2.getUuid());
+//        }
+//    };
 
-    private static final Comparator<Resume> RESUME_COMPARATOR = (o1, o2) -> o1.getUuid().compareTo(o2.getUuid());
+//TODO #2
+//    private static final Comparator<Resume> RESUME_COMPARATOR = (o1, o2) -> o1.getUuid().compareTo(o2.getUuid());
+
+//TODO #3
+    private static final Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getUuid);
 
     @Override
     protected Integer getSearchKey(String uuid) {
         Resume searchkey = new Resume(uuid);
-        return Arrays.binarySearch(storage, 0, size, searchkey, RESUME_COMPARATOR);
+        return Arrays.binarySearch(storage, 0, size, searchkey, RESUME_COMPARATOR); // Перебираємо масив компаратором
     }
 
     @Override
