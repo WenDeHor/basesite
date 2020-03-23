@@ -4,6 +4,9 @@ import com.base.network.exeption.ExistStorageExeption;
 import com.base.network.exeption.NotExistStorageExeption;
 import com.base.network.model.Resume;
 
+import java.util.Collections;
+import java.util.List;
+
 public abstract class AbstractStorage implements Storage {
 
     protected abstract Object getSearchKey(String uuid);
@@ -17,6 +20,8 @@ public abstract class AbstractStorage implements Storage {
     protected abstract void doDelate(Object searchKey);
 
     protected abstract Resume doGet(Object searchKey);
+
+    protected abstract List<Resume> doCopiAll();
 
     @Override
     public void update(Resume r) {
@@ -58,5 +63,10 @@ public abstract class AbstractStorage implements Storage {
         return searchKey;
     }
 
-
+    @Override
+    public List<Resume> getAllSorted() {
+        List<Resume> list = doCopiAll();
+        Collections.sort(list);
+        return list;
+    }
 }

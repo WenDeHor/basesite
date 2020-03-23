@@ -1,6 +1,6 @@
 package com.base.network.storage;
 
-public class ArrayStorageTest extends AbstractStorageTest {
+public class ArrayStorageTest extends AbstractArreyStorageTest {
 
     public ArrayStorageTest() {
         super(new ArrayStorage());

@@ -4,6 +4,7 @@ import com.base.network.exeption.StoragExeption;
 import com.base.network.model.Resume;
 
 import java.util.Arrays;
+import java.util.List;
 
 public abstract class AbstractArreyStorage extends AbstractStorage {
     public static final int STORAGE_LIMIT = 10000;
@@ -28,7 +29,7 @@ public abstract class AbstractArreyStorage extends AbstractStorage {
         storage[(Integer) searchKey] = r;
     }
 
-//    public void update(Resume r) {
+    //    public void update(Resume r) {
 //        int index = getSearchKay(r.getUuid());
 //        if (index != -1) {
 //            throw new NotExistStorageExeption(r.getUuid());
@@ -36,9 +37,9 @@ public abstract class AbstractArreyStorage extends AbstractStorage {
 //            storage[index] = r;
 //        }
 //    }
-
-    public Resume[] getAll() {
-        return Arrays.copyOfRange(storage, 0, size);
+    @Override
+    public List<Resume> doCopiAll() {
+        return Arrays.asList(Arrays.copyOfRange(storage, 0, size));
 //        Resume[] result = new Resume[size];
 //        for (int i = 0; i < size; i++) {
 //            result[i] = storage[i];
