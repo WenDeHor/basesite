@@ -6,7 +6,7 @@ import com.base.network.model.Resume;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class AbstractArreyStorage extends AbstractStorage {
+public abstract class AbstractArreyStorage extends AbstractStorage<Integer> {
     public static final int STORAGE_LIMIT = 10000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
@@ -25,8 +25,8 @@ public abstract class AbstractArreyStorage extends AbstractStorage {
 
 
     @Override
-    protected void doUpdate(Resume r, Object searchKey) {
-        storage[(Integer) searchKey] = r;
+    protected void doUpdate(Resume r, Integer searchKey) {
+        storage[searchKey] = r;
     }
 
     //    public void update(Resume r) {
@@ -48,11 +48,11 @@ public abstract class AbstractArreyStorage extends AbstractStorage {
     }
 
     @Override
-    protected void doSave(Resume r, Object searchKey) {
+    protected void doSave(Resume r, Integer searchKey) {
         if (size == storage.length) {
             throw new StoragExeption("Storage overflow", r.getUuid());
         } else {
-            isertElement(r, (Integer) searchKey);
+            isertElement(r, searchKey);
             size++;
         }
     }
@@ -71,8 +71,8 @@ public abstract class AbstractArreyStorage extends AbstractStorage {
 
 
     @Override
-    protected void doDelate(Object searchKey) {
-        fillDeletedElement((Integer) searchKey);
+    protected void doDelate(Integer searchKey) {
+        fillDeletedElement(searchKey);
         storage[size - 1] = null;
         size--;
     }
@@ -90,8 +90,8 @@ public abstract class AbstractArreyStorage extends AbstractStorage {
 //    }
 
     @Override
-    protected Resume doGet(Object searchKey) {
-        return storage[(Integer) searchKey];
+    protected Resume doGet(Integer searchKey) {
+        return storage[searchKey];
     }
 
 //    public Resume get(String uuid) {
@@ -103,8 +103,8 @@ public abstract class AbstractArreyStorage extends AbstractStorage {
 //    }
 
     @Override
-    protected boolean isExist(Object searchKey) {
-        return (Integer) searchKey >= 0;
+    protected boolean isExist(Integer searchKey) {
+        return searchKey >= 0;
     }
 
     protected abstract void fillDeletedElement(int index);
