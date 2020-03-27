@@ -1,4 +1,4 @@
-package com.base.network.model.exeption;
+package com.base.network.exeption;
 
 public class StoragExeption extends RuntimeException {
     private final String uuid;
@@ -12,4 +12,10 @@ public class StoragExeption extends RuntimeException {
         this.uuid=uuid;
 
     }
+    public StoragExeption(String masage, String uuid, Exception e) {
+        super(masage, e);
+        this.uuid=uuid;
+
+    }
+
 }

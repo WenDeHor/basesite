@@ -12,4 +12,10 @@ public class StoragExeption extends RuntimeException {
         this.uuid=uuid;
 
     }
+    public StoragExeption(String masage, String uuid, Exception e) {
+        super(masage, e);
+        this.uuid=uuid;
+
+    }
+
 }

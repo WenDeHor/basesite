@@ -1,4 +1,4 @@
-package com.base.network.model.exeption;
+package com.base.network.exeption;
 
 public class NotExistStorageExeption extends StoragExeption {
     public NotExistStorageExeption(String uuid) {
