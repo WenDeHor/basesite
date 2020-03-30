@@ -2,18 +2,20 @@ package com.base.network.storage;
 
 import com.base.network.exeption.StoragExeption;
 import com.base.network.model.Resume;
+import com.base.network.storage.serializer.StreamSerializer;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class AbstractFileStorage extends AbstractStorage<File> {
+public class FileStorage extends AbstractStorage<File> {
     private File directory;
+    private StreamSerializer streamSerializer;
 
-    protected AbstractFileStorage(File directory) {
+    protected FileStorage(File directory, StreamSerializer streamSerializer) {
         Objects.requireNonNull(directory, "Directory must not be null");
+        this.streamSerializer=streamSerializer;
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + "is not directory");
         }
@@ -31,7 +33,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected void doUpdate(Resume r, File file) {
         try {
-            doWrite(r, file);
+            streamSerializer.doWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StoragExeption("File write error ", r.getUuid(), e);
         }
@@ -46,15 +48,13 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     protected void doSave(Resume r, File file) {
         try {
             file.createNewFile();
-            doWrite(r, file);
         } catch (IOException e) {
-            throw new StoragExeption("Couldn*t create file "+ file.getAbsolutePath(), file.getName(), e);
+            throw new StoragExeption("Couldn*t create file " + file.getAbsolutePath(), file.getName(), e);
         }
         doUpdate(r, file);
     }
 
-    protected abstract void doWrite(Resume r, File file) throws IOException;
-    protected abstract Resume doRead(File file) throws IOException;
+
 
     @Override
     protected void doDelate(File file) {
@@ -66,7 +66,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected Resume doGet(File file) {
         try {
-            return doRead(file);
+            return streamSerializer.doRead(new BufferedInputStream(new FileInputStream(file)));
         } catch (IOException e) {
             throw new StoragExeption("File read error ", file.getName(), e);
         }
@@ -74,12 +74,12 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected List<Resume> doCopiAll() {
-        File[]files=directory.listFiles();
-        if(files==null){
-            throw new StoragExeption("Directory read error", null);
+        File[] files = directory.listFiles();
+        if (files == null) {
+            throw new StoragExeption("Directory read error");
         }
-        List<Resume>list=new ArrayList<>(files.length);
-        for(File file:files){
+        List<Resume> list = new ArrayList<>(files.length);
+        for (File file : files) {
             list.add(doGet(file));
         }
         return list;
@@ -99,7 +99,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     public int size() {
         String[] list = directory.list();
         if (list == null) {
-            throw new StoragExeption("Directory error read", null);
+            throw new StoragExeption("Directory error read");
         }
         return list.length;
     }
