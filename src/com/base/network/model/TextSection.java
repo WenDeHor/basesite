@@ -6,13 +6,12 @@ public class TextSection extends Section {
     private static final long serialVersionUID = 1L;
     private final String content;
 
+    public String getContent() {
+        return content;
+    }
     public TextSection(String content) {
         Objects.requireNonNull(content,"content in TextSection must not be null");
         this.content = content;
-    }
-
-    public String getContent() {
-        return content;
     }
 
     @Override
