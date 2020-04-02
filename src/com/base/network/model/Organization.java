@@ -16,6 +16,7 @@ import java.util.Objects;
 
 import static com.base.network.util.DateUtil.NOW;
 
+
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Organization implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -35,6 +36,18 @@ public class Organization implements Serializable {
         this.positions = positions;
     }
 
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public Link getHomePage() {
+        return homePage;
+    }
+
+    public List<Position> getPositions() {
+        return positions;
+    }
+
     @Override
     public String toString() {
         return "Organization{" +
@@ -42,6 +55,7 @@ public class Organization implements Serializable {
                 ", positions=" + positions +
                 '}';
     }
+
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class Position implements Serializable {
         @XmlJavaTypeAdapter(LocalDateAdapter.class)
@@ -71,7 +85,7 @@ public class Organization implements Serializable {
             this.startDate = startDate;
             this.endDate = endDate;
             this.title = title;
-            this.description = description;
+            this.description = description==null?"":description;
         }
 
         public LocalDate getStartDate() {

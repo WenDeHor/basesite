@@ -1,5 +1,6 @@
 package com.base.network.util;
 
+import com.base.network.model.Section;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -8,7 +9,7 @@ import java.io.Writer;
 
 public class JsonParser {
     private static Gson GSON = new GsonBuilder()
-//            .registerTypeAdapter(Section.class, new JsonSectionAdapter())
+            .registerTypeAdapter(Section.class, new JsonSectionAdapter())
             .create();
 
     public static <T> T reader(Reader reader, Class<T> clazz) {
