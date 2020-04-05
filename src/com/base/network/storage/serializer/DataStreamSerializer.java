@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
+// робота зі стрічками, примітивами, а не з байтиками
 public class DataStreamSerializer implements StreamSerializer {
     @Override
     public void doWrite(Resume r, OutputStream os) throws IOException {
@@ -50,7 +50,22 @@ public class DataStreamSerializer implements StreamSerializer {
             });
         }
     }
+    private interface ElementWriter<T> {
+        void writElem(T t) throws IOException;
+    }
 
+    private <T> void writeColection(DataOutputStream dos, Collection<T> collection, ElementWriter<T> writer) throws
+            IOException {
+        dos.writeInt(collection.size());
+        for (T item : collection) {
+            writer.writElem(item);
+        }
+    }
+
+    private void writeLocalDate(DataOutputStream dos, LocalDate ld) throws IOException {
+        dos.writeInt(ld.getYear());
+        dos.writeInt(ld.getMonth().getValue());
+    }
     @Override
     public Resume doRead(InputStream is) throws IOException {
         try (DataInputStream dis = new DataInputStream(is)) {
@@ -59,14 +74,23 @@ public class DataStreamSerializer implements StreamSerializer {
             Resume resume = new Resume(uuid, fullName);
             readItems(dis, () -> resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
             readItems(dis, () -> {
-                SectionType sectionType = SectionType.valueOf(dis.readUTF());
+                SectionType sectionType = SectionType.valueOf(dis.readUTF()); // valueOf стрічку переводить в ENUM
                 resume.addSection(sectionType, readSection(dis, sectionType));
             });
             return resume;
         }
 
     }
+    private interface ElementProcessor {
+        void process() throws IOException;
+    }
 
+    private void readItems(DataInputStream dis, ElementProcessor processor) throws IOException {
+        int size = dis.readInt();
+        for (int i = 0; i < size; i++) {
+            processor.process();
+        }
+    }
     private Section readSection(DataInputStream dis, SectionType sectionType) throws IOException {
         switch (sectionType) {
             case PERSONAL:
@@ -79,9 +103,9 @@ public class DataStreamSerializer implements StreamSerializer {
             case EDUCATION:
                 return new OrganizationSections(
                         readList(dis, () -> new Organization(
-                                new Link(dis.readUTF(), dis.readUTF()),
+                                new Link(dis.readUTF(), dis.readUTF()), // читаємо з лінка дві стрічки - name, URL
                                 readList(dis, () -> new Organization.Position(
-                                        readLocalDate(dis), readLocalDate(dis), dis.readUTF(), dis.readUTF()
+                                        readLocalDate(dis), readLocalDate(dis), dis.readUTF(), dis.readUTF() // читаємо дати - місяць і рік
 
                                 ))
                         )));
@@ -93,7 +117,9 @@ public class DataStreamSerializer implements StreamSerializer {
     private LocalDate readLocalDate(DataInputStream dis) throws IOException {
         return LocalDate.of(dis.readInt(), dis.readInt(), 1);
     }
-
+    private interface ElementReader<T> { // Інтерфейс для здійснення різних стратегій - можна різні елементи подавати
+        T read() throws IOException;
+    }
     private <T> List<T> readList(DataInputStream dis, ElementReader<T> reader) throws IOException {
         int size = dis.readInt();
         List<T> list = new ArrayList<>(size);
@@ -104,36 +130,12 @@ public class DataStreamSerializer implements StreamSerializer {
 
     }
 
-    private interface ElementReader<T> {
-        T read() throws IOException;
-    }
 
-    private void writeLocalDate(DataOutputStream dos, LocalDate ld) throws IOException {
-        dos.writeInt(ld.getYear());
-        dos.writeInt(ld.getMonth().getValue());
-    }
 
-    private interface ElementProcessor {
-        void process() throws IOException;
-    }
 
-    private interface ElementWriter<T> {
-        void writer(T t) throws IOException;
-    }
 
-    private void readItems(DataInputStream dis, ElementProcessor processor) throws IOException {
-        int size = dis.readInt();
-        for (int i = 0; i < size; i++) {
-            processor.process();
-        }
-    }
 
-    private <T> void writeColection(DataOutputStream dos, Collection<T> collection, ElementWriter<T> writer) throws
-            IOException {
-        dos.writeInt(collection.size());
-        for (T item : collection) {
-            writer.writer(item);
-        }
-    }
+
+
 
 }

@@ -63,9 +63,9 @@ public class MainFile {
         if (files != null) {
             for (File file : files) {
                 if (file.isFile()) {
-                    System.out.println(offset+"File: " + file.getName());
+                    System.out.println(offset+"F: " + file.getName());
                 } else if (file.isDirectory()) {
-                    System.out.println(offset+"Directory: " + file.getName());
+                    System.out.println(offset+"D: " + file.getName());
                     printDirectoryDeeply(file, offset+"  ");
                 }
             }

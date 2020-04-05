@@ -13,6 +13,10 @@ public class StoragExeption extends RuntimeException {
         this.uuid = uuid;
     }
 
+    public StoragExeption(Exception e) {
+        this(e.getMessage(), e);
+    }
+
     public StoragExeption(String masage, Exception e) {
         this(masage, null, e);
     }
@@ -21,5 +25,6 @@ public class StoragExeption extends RuntimeException {
         super(masage, e);
         this.uuid = uuid;
     }
+
 
 }

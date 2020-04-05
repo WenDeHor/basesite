@@ -4,6 +4,7 @@ import com.base.network.exeption.StoragExeption;
 import com.base.network.model.Resume;
 import com.base.network.storage.serializer.StreamSerializer;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -70,7 +71,7 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected Resume doGet(Path path) {
         try {
-            return streamSerializer.doRead(Files.newInputStream(path));
+            return streamSerializer.doRead(new BufferedInputStream(Files.newInputStream(path)));
         } catch (IOException e) {
             throw new StoragExeption("Path read error ", getFileName(path), e);
         }
@@ -78,12 +79,12 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     protected List<Resume> doCopiAll() {
-        return getFilesList().map(path -> doGet(path)).collect(Collectors.toList());
+        return getFilesList().map(this::doGet).collect(Collectors.toList());
     }
 
     @Override
     public void clear() {
-        getFilesList().forEach(path -> doDelate(path));
+        getFilesList().forEach(this::doDelate);
     }
 
 
