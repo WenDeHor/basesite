@@ -7,9 +7,9 @@ import com.base.network.storage.Storage;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class SqlStorage implements Storage {
 
@@ -105,7 +105,7 @@ public class SqlStorage implements Storage {
     public List<Resume> getAllSorted() {
         return sqlHelper.execute("SELECT * FROM resume r LEFT JOIN contact c ON r.uuid=c.resum_uuid ORDER BY full_name, uuid ", ps -> {
             ResultSet rs = ps.executeQuery();
-            Map<String, Resume> map = new LinkedHashMap<>();
+            Map<String, Resume> map = new TreeMap<>();
             while (rs.next()) {
                 String uuid = rs.getString("uuid");
                 Resume resume = map.get(uuid);
@@ -122,9 +122,10 @@ public class SqlStorage implements Storage {
     private void addContact(ResultSet rs, Resume r) throws SQLException {
 
         String value = rs.getString("value");
-        ContactType type = ContactType.valueOf(rs.getString("type"));
+
         if (value != null) {
-            r.addContact(type, value);
+            ContactType type = ContactType.valueOf(rs.getString("type"));
+            r.addContact( type, value);
         }
 
     }

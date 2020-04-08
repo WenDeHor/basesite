@@ -3,13 +3,13 @@ package com.base.network.model;
 public enum ContactType {
     PHONE("PHONE"),
     MOBILE("MOBILE"),
-    HOME_PHONE("Домашній тел."),
+    HOME_PHONE("HOME_PHONE"),
     SKYPE("Skype"),
     MAIL("MAIL"),
-    LINKEDIN("Профіль Linkedin"),
-    GITHUB("Профіль GitHub"),
-    STACKOVERFLOW("Профіль Stackoverflow"),
-    HOME_PAGE("Домашня сторінка");
+    LINKEDIN("Linkedin"),
+    GITHUB("GitHub"),
+    STACKOVERFLOW("Stackoverflow"),
+    HOME_PAGE("HOME_PAGE");
     private final String type;
 
     ContactType(String type) {
