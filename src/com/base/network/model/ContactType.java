@@ -10,13 +10,15 @@ public enum ContactType {
     GITHUB("Профіль GitHub"),
     STACKOVERFLOW("Профіль Stackoverflow"),
     HOME_PAGE("Домашня сторінка");
-    private final String title;
+    private final String type;
 
-    ContactType(String title) {
-        this.title = title;
+    ContactType(String type) {
+        this.type = type;
     }
 
-    public String getTitle() {
-        return title;
+    public String getType() {
+        return type;
     }
+
+
 }

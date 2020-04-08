@@ -1,6 +1,6 @@
 package com.base.network.storage;
 
-import com.base.network.exeption.StoragExeption;
+import com.base.network.exeption.StorageExeption;
 import com.base.network.model.Resume;
 import com.base.network.storage.serializer.StreamSerializer;
 
@@ -35,7 +35,7 @@ public class FileStorage extends AbstractStorage<File> {
         try {
             streamSerializer.doWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
-            throw new StoragExeption("File write error ", r.getUuid(), e);
+            throw new StorageExeption("File write error ", r.getUuid(), e);
         }
     }
 
@@ -49,7 +49,7 @@ public class FileStorage extends AbstractStorage<File> {
         try {
             file.createNewFile();
         } catch (IOException e) {
-            throw new StoragExeption("Couldn*t create file " + file.getAbsolutePath(), file.getName(), e);
+            throw new StorageExeption("Couldn*t create file " + file.getAbsolutePath(), file.getName(), e);
         }
         doUpdate(r, file);
     }
@@ -59,7 +59,7 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     protected void doDelate(File file) {
         if (!file.delete()) {
-            throw new StoragExeption("File delate error ", file.getName());
+            throw new StorageExeption("File delate error ", file.getName());
         }
     }
 
@@ -68,7 +68,7 @@ public class FileStorage extends AbstractStorage<File> {
         try {
             return streamSerializer.doRead(new BufferedInputStream(new FileInputStream(file)));
         } catch (IOException e) {
-            throw new StoragExeption("File read error ", file.getName(), e);
+            throw new StorageExeption("File read error ", file.getName(), e);
         }
     }
 
@@ -76,7 +76,7 @@ public class FileStorage extends AbstractStorage<File> {
     protected List<Resume> doCopiAll() {
         File[] files = directory.listFiles();
         if (files == null) {
-            throw new StoragExeption("Directory read error");
+            throw new StorageExeption("Directory read error");
         }
         List<Resume> list = new ArrayList<>(files.length);
         for (File file : files) {
@@ -99,7 +99,7 @@ public class FileStorage extends AbstractStorage<File> {
     public int size() {
         String[] list = directory.list();
         if (list == null) {
-            throw new StoragExeption("Directory error read");
+            throw new StorageExeption("Directory error read");
         }
         return list.length;
     }

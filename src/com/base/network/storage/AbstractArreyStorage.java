@@ -1,6 +1,6 @@
 package com.base.network.storage;
 
-import com.base.network.exeption.StoragExeption;
+import com.base.network.exeption.StorageExeption;
 import com.base.network.model.Resume;
 
 import java.util.Arrays;
@@ -50,7 +50,7 @@ public abstract class AbstractArreyStorage extends AbstractStorage<Integer> {
     @Override
     protected void doSave(Resume r, Integer searchKey) {
         if (size == storage.length) {
-            throw new StoragExeption("Storage overflow", r.getUuid());
+            throw new StorageExeption("Storage overflow", r.getUuid());
         } else {
             isertElement(r, searchKey);
             size++;

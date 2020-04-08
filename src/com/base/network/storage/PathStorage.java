@@ -1,6 +1,6 @@
 package com.base.network.storage;
 
-import com.base.network.exeption.StoragExeption;
+import com.base.network.exeption.StorageExeption;
 import com.base.network.model.Resume;
 import com.base.network.storage.serializer.StreamSerializer;
 
@@ -39,7 +39,7 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             streamSerializer.doWrite(r, new BufferedOutputStream(Files.newOutputStream(path)));
         } catch (IOException e) {
-            throw new StoragExeption("Path write error ", r.getUuid(), e);
+            throw new StorageExeption("Path write error ", r.getUuid(), e);
         }
     }
 
@@ -53,7 +53,7 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             Files.createFile(path);
         } catch (IOException e) {
-            throw new StoragExeption("Couldn*t create path " + path, getFileName(path), e);
+            throw new StorageExeption("Couldn*t create path " + path, getFileName(path), e);
         }
         doUpdate(r, path);
     }
@@ -64,7 +64,7 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             Files.delete(path);
         } catch (IOException e) {
-            throw new StoragExeption("Path delate error", getFileName(path), e);
+            throw new StorageExeption("Path delate error", getFileName(path), e);
         }
     }
 
@@ -73,7 +73,7 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             return streamSerializer.doRead(new BufferedInputStream(Files.newInputStream(path)));
         } catch (IOException e) {
-            throw new StoragExeption("Path read error ", getFileName(path), e);
+            throw new StorageExeption("Path read error ", getFileName(path), e);
         }
     }
 
@@ -101,7 +101,7 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             return Files.list(directory);
         } catch (IOException e) {
-            throw new StoragExeption("Path delate error", null, e);
+            throw new StorageExeption("Path delate error", null, e);
         }
 
     }

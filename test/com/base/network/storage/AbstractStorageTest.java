@@ -3,6 +3,7 @@ package com.base.network.storage;
 import com.base.network.Config;
 import com.base.network.exeption.ExistStorageExeption;
 import com.base.network.exeption.NotExistStorageExeption;
+import com.base.network.model.ContactType;
 import com.base.network.model.Resume;
 import org.junit.After;
 import org.junit.Before;
@@ -10,10 +11,11 @@ import org.junit.Test;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public abstract class AbstractStorageTest {
     protected static final File STORAGE_DIR = Config.get().getStorageDir();
@@ -30,10 +32,10 @@ public abstract class AbstractStorageTest {
 //
 //    private static final String UUID_4 = "uuid_4";
 //    private static final Resume RESUME_4 = new Resume(UUID_4);
-    private static final String UUID_1 = "uuid1";
-    private static final String UUID_2 = "uuid2";
-    private static final String UUID_3 = "uuid3";
-    private static final String UUID_4 = "uuid4";
+    private static final String UUID_1 = UUID.randomUUID().toString();
+    private static final String UUID_2 = UUID.randomUUID().toString();
+    private static final String UUID_3 = UUID.randomUUID().toString();
+    private static final String UUID_4 = UUID.randomUUID().toString();
 
     private static final Resume R1;
     private static final Resume R2;
@@ -45,8 +47,8 @@ public abstract class AbstractStorageTest {
         R2 = new Resume(UUID_2, "Name2");
         R3 = new Resume(UUID_3, "Name3");
         R4 = new Resume(UUID_4, "Name4");
-//        R1.addContact(ContactType.MOBILE, "380123456789");
-//        R1.addContact(ContactType.MAIL, "mail@mail.com");
+        R1.addContact(ContactType.MOBILE, "380123456789");
+        R1.addContact(ContactType.MAIL, "mail@mail.com");
 //        R1.addSection(SectionType.OBJECTIVE, new TextSection("Позиція"));
 //        R1.addSection(SectionType.PERSONAL, new TextSection("Особисті дані"));
 //        R1.addSection(SectionType.ACHIEVEMENT, new ListSection("Досягнення 1", "Досягнення 2", "Досягнення 3"));
@@ -61,8 +63,8 @@ public abstract class AbstractStorageTest {
 //
 //
 //
-//        R2.addContact(ContactType.MOBILE, "380123456789");
-//        R2.addContact(ContactType.MAIL, "mail222@mail.com");
+        R2.addContact(ContactType.MOBILE, "380123456789");
+        R2.addContact(ContactType.MAIL, "mail222@mail.com");
 //        R2.addSection(SectionType.OBJECTIVE, new TextSection("Позиція2"));
 //        R2.addSection(SectionType.PERSONAL, new TextSection("Особисті дані2"));
 //        R2.addSection(SectionType.ACHIEVEMENT, new ListSection("Досягнення 2", "Досягнення 3", "Досягнення 4"));
@@ -106,8 +108,11 @@ public abstract class AbstractStorageTest {
     @Test
     public void update() {
         Resume newResume = new Resume(UUID_1, "new Name");
+        R1.addContact(ContactType.MOBILE, "54789");
+        R1.addContact(ContactType.MAIL, "sdfsdfsdf@mail.com");
+
         storage.update(newResume);
-        assertTrue(newResume.equals(storage.get(UUID_1)));
+        assertEquals(newResume, storage.get(UUID_1));
     }
 
     @Test(expected = NotExistStorageExeption.class)
@@ -120,7 +125,9 @@ public abstract class AbstractStorageTest {
     public void getAllSorted() throws Exception {
         List<Resume> list = storage.getAllSorted();
         assertEquals(3, list.size());
-        assertEquals(list, Arrays.asList(R1, R2, R3));
+        List<Resume>sortResume=Arrays.asList(R1,R2, R3);
+        Collections.sort(sortResume);
+        assertEquals(sortResume, list);
     }
 
     //    @Test

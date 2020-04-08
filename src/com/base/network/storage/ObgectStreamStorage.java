@@ -1,6 +1,6 @@
 package com.base.network.storage;
 
-import com.base.network.exeption.StoragExeption;
+import com.base.network.exeption.StorageExeption;
 import com.base.network.model.Resume;
 import com.base.network.storage.serializer.StreamSerializer;
 
@@ -20,7 +20,7 @@ public class ObgectStreamStorage implements StreamSerializer {
         try (ObjectInputStream ois = new ObjectInputStream(is)) {
             return (Resume) ois.readObject();
         } catch (ClassNotFoundException e) {
-            throw new StoragExeption("Error read resume fo file", null, e);
+            throw new StorageExeption("Error read resume fo file", null, e);
         }
 
     }
