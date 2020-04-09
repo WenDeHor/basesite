@@ -4,10 +4,6 @@ create table resume
     full_name text                 not null
 );
 
-alter table resume
-    owner to postgres;
-
-
 create table contact
 (
     id         serial,
@@ -17,8 +13,14 @@ create table contact
 
 );
 
-alter table contact
-    owner to postgres;
+create unique index contact_uuid_type_index on contact (resum_uuid, type);
 
-create unique index contact_uuid_type_index
-    on contact (resum_uuid, type);
+create table section
+(
+    id         serial primary key,
+    resum_uuid char(36) not null references resume (uuid) on delete cascade,
+    type       text     not null,
+    content      text     not null
+
+);
+create unique index section_inx on section (resum_uuid, type);
