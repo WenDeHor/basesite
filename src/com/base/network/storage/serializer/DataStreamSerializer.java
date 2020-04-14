@@ -35,7 +35,7 @@ public class DataStreamSerializer implements StreamSerializer {
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
-                        writeColection(dos, ((OrganizationSections) section).getOrganizations(), organization -> {
+                        writeColection(dos, ((OrganizationSection) section).getOrganizations(), organization -> {
                             dos.writeUTF(organization.getHomePage().getName());
                             dos.writeUTF(organization.getHomePage().getUrl());
                             writeColection(dos, organization.getPositions(), position -> {
@@ -72,10 +72,10 @@ public class DataStreamSerializer implements StreamSerializer {
             String uuid = dis.readUTF();
             String fullName = dis.readUTF();
             Resume resume = new Resume(uuid, fullName);
-            readItems(dis, () -> resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
+            readItems(dis, () -> resume.setContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
             readItems(dis, () -> {
                 SectionType sectionType = SectionType.valueOf(dis.readUTF()); // valueOf стрічку переводить в ENUM
-                resume.addSection(sectionType, readSection(dis, sectionType));
+                resume.setSection(sectionType, readSection(dis, sectionType));
             });
             return resume;
         }
@@ -101,7 +101,7 @@ public class DataStreamSerializer implements StreamSerializer {
                 return new ListSection(readList(dis, dis::readUTF));
             case EXPERIENCE:
             case EDUCATION:
-                return new OrganizationSections(
+                return new OrganizationSection(
                         readList(dis, () -> new Organization(
                                 new Link(dis.readUTF(), dis.readUTF()), // читаємо з лінка дві стрічки - name, URL
                                 readList(dis, () -> new Organization.Position(

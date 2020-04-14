@@ -33,33 +33,33 @@ public class TestData {
         R2 = new Resume(UUID_2, "Name2");
         R3 = new Resume(UUID_3, "Name3");
         R4 = new Resume(UUID_4, "Name4");
-        R1.addContact(ContactType.MOBILE, "380123456789");
-        R1.addContact(ContactType.MAIL, "mail@mail.com");
-        R1.addSection(SectionType.OBJECTIVE, new TextSection("Позиція"));
-        R1.addSection(SectionType.PERSONAL, new TextSection("Особисті дані"));
-        R1.addSection(SectionType.ACHIEVEMENT, new ListSection("Досягнення 1", "Досягнення 2", "Досягнення 3"));
-        R1.addSection(SectionType.QUALIFICATIONCE, new ListSection("java", "SQL"));
-        R1.addSection(SectionType.EXPERIENCE,
-                new OrganizationSections(
+        R1.setContact(ContactType.MOBILE, "380123456789");
+        R1.setContact(ContactType.MAIL, "mail@mail.com");
+        R1.setSection(SectionType.OBJECTIVE, new TextSection("Позиція"));
+        R1.setSection(SectionType.PERSONAL, new TextSection("Особисті дані"));
+        R1.setSection(SectionType.ACHIEVEMENT, new ListSection("Досягнення 1", "Досягнення 2", "Досягнення 3"));
+        R1.setSection(SectionType.QUALIFICATIONCE, new ListSection("java", "SQL"));
+        R1.setSection(SectionType.EXPERIENCE,
+                new OrganizationSection(
                         new Organization("IT", "https:",
                                 new Organization.Position(2001, Month.JANUARY, "position 1", "content 1"),
                                 new Organization.Position(2002, Month.MARCH, 2005, Month.JANUARY, "position 2", "content 2"))));
-        R1.addSection(SectionType.EDUCATION, new OrganizationSections(new Organization("Institute", null,
+        R1.setSection(SectionType.EDUCATION, new OrganizationSection(new Organization("Institute", null,
                 new Organization.Position(2003, Month.SEPTEMBER, 2008, Month.APRIL, "Specialist", "Bilding"))));
 
 
 
-        R2.addContact(ContactType.MOBILE, "380123456789");
-        R2.addContact(ContactType.MAIL, "mail222@mail.com");
-        R2.addSection(SectionType.OBJECTIVE, new TextSection("Позиція2"));
-        R2.addSection(SectionType.PERSONAL, new TextSection("Особисті дані2"));
-        R2.addSection(SectionType.ACHIEVEMENT, new ListSection("Досягнення 2", "Досягнення 3", "Досягнення 4"));
-        R2.addSection(SectionType.QUALIFICATIONCE, new ListSection("java", "SQL"));
-        R2.addSection(SectionType.EXPERIENCE,
-                new OrganizationSections(
-                        new Organization("IT java", null,
-                                new Organization.Position(2003, Month.JANUARY, "position 2", "content 2"))));
-        R2.addSection(SectionType.EDUCATION, new OrganizationSections(new Organization("Institute", null,
-                new Organization.Position(2000, Month.SEPTEMBER, 2001, Month.APRIL, "Specialist2", "Bilding2"))));
+        R2.setContact(ContactType.MOBILE, "380123456789");
+        R2.setContact(ContactType.MAIL, "mail222@mail.com");
+        R2.setSection(SectionType.OBJECTIVE, new TextSection("Позиція2"));
+        R2.setSection(SectionType.PERSONAL, new TextSection("Особисті дані2"));
+        R2.setSection(SectionType.ACHIEVEMENT, new ListSection("Досягнення 2", "Досягнення 3", "Досягнення 4"));
+        R2.setSection(SectionType.QUALIFICATIONCE, new ListSection("java", "SQL"));
+//        R2.setSection(SectionType.EXPERIENCE,
+//                new OrganizationSection(
+//                        new Organization("IT java", null,
+//                                new Organization.Position(2003, Month.JANUARY, "position 2", "content 2"))));
+//        R2.setSection(SectionType.EDUCATION, new OrganizationSection(new Organization("Institute", null,
+//                new Organization.Position(2000, Month.SEPTEMBER, 2001, Month.APRIL, "Specialist2", "Bilding2"))));
     }
 }

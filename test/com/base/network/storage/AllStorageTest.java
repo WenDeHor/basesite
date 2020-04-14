@@ -1,5 +1,6 @@
 package com.base.network.storage;
 
+import com.base.network.util.JsonParserTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -15,7 +16,8 @@ import org.junit.runners.Suite;
         XmlPathStorageTest.class,
         JasonPathStorageTest.class,
         DataPathStorageTest.class,
-        SqlStorageTest.class
+        SqlStorageTest.class,
+        JsonParserTest.class
 })
 public class AllStorageTest {
 }

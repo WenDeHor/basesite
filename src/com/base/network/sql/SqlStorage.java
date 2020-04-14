@@ -19,6 +19,11 @@ public class SqlStorage implements Storage {
     public final SqlHelper sqlHelper;
 
     public SqlStorage(String dbUrl, String dbUser, String dbPassword) {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new IllegalStateException(e);
+        }
         sqlHelper = new SqlHelper(() -> DriverManager.getConnection(dbUrl, dbUser, dbPassword));
     }
 
@@ -127,10 +132,7 @@ public class SqlStorage implements Storage {
                     addSection(rs, r);
                 }
             }
-
             return r;
-
-
         });
     }
 
@@ -151,7 +153,7 @@ public class SqlStorage implements Storage {
         return sqlHelper.transactionExecute(conn -> {
             Map<String, Resume> resumes = new TreeMap<>();
 
-            try (PreparedStatement ps = conn.prepareStatement("SELECT *FROM resume ORDER BY full_name, uuid")) {
+            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume ORDER BY  full_name, uuid")) {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
                     String uuid = rs.getString("uuid");
@@ -162,14 +164,14 @@ public class SqlStorage implements Storage {
             try (PreparedStatement ps = conn.prepareStatement("SELECT *FROM contact")) {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
-                    Resume r = resumes.get(rs.getString("resume_uuid"));
+                    Resume r = resumes.get(rs.getString("resum_uuid"));
                     addContact(rs, r);
                 }
             }
             try (PreparedStatement ps = conn.prepareStatement("SELECT *FROM section")) {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
-                    Resume r = resumes.get(rs.getString("resume_uuid"));
+                    Resume r = resumes.get(rs.getString("resum_uuid"));
                     addSection(rs, r);
                 }
             }
@@ -181,7 +183,7 @@ public class SqlStorage implements Storage {
         String content = rs.getString("content");
         if (content != null) {
             SectionType type = SectionType.valueOf(rs.getString("type"));
-            r.addSection(type, JsonParser.read(content, Section.class));
+            r.setSection(type, JsonParser.read(content, Section.class));
         }
     }
 
@@ -189,7 +191,7 @@ public class SqlStorage implements Storage {
         String value = rs.getString("value");
         if (value != null) {
             ContactType type = ContactType.valueOf(rs.getString("type"));
-            r.addContact(type, value);
+            r.setContact(type, value);
         }
     }
 

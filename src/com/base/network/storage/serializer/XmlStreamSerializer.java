@@ -15,7 +15,7 @@ public class XmlStreamSerializer implements StreamSerializer {
                Resume.class,
                Organization.class,
                Link.class,
-               OrganizationSections.class,
+               OrganizationSection.class,
                TextSection.class,
                ListSection.class,
                Organization.Position.class);

@@ -1,8 +1,8 @@
 package com.base.network.model;
 
 public enum SectionType {
-    PERSONAL("Особисті дані"),
     OBJECTIVE("Позиція"),
+    PERSONAL("Особисті дані"),
     ACHIEVEMENT("Досягнення"),
     QUALIFICATIONCE("Кваліфікація"),
     EXPERIENCE("Досвід роботи"),
